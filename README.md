@@ -1,6 +1,6 @@
 # Docker Storage Scenario - MySQL Database
 
-This repository provides an example scenario for practicing Docker storage operations with a MySQL database. The scenario focuses on creating and managing a Docker volume for persistent storage of MySQL data.
+This repository provides an example scenario completed as part of my training after learning Docker storage. The scenario focuses on creating and managing a Docker volume for persistent storage of MySQL data.
 
 ## Prerequisites
 
@@ -8,10 +8,10 @@ Make sure you have Docker installed on your system. You can download Docker from
 
 ## Using Docker Volumes for Persistent MySQL Data
 
-1. Create a volume "mysql-db" in the host machine
+1. Create a Docker volume "mysql-data" in the host machine
 
 ```
-docker volume create mysql-db
+docker volume create mysql-data
 ```
 
 2. Check if the volume is created or not
@@ -26,7 +26,7 @@ DRIVER    VOLUME NAME
 local     mysql-data
 ```
 
-3. Run a mysql container named mysql_db, mapping the volume "mysql-data" to the container data directory "var/lib/mysql" 
+3. Run a mysql container mapping the volume "mysql-data" to persist the database 
 
 ```
 docker run -d --name mysql_db -v mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=prabin123 mysql:latest
@@ -39,7 +39,7 @@ CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS   
 a699216f94ae   mysql:latest   "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   3306/tcp, 33060/tcp   mysql_db
 ```
 
-4. Access the running container as follow:
+4. Access the running container
 
 ```
 docker exec -it mysql_db mysql -u root -p
@@ -82,8 +82,9 @@ Records: 3  Duplicates: 0  Warnings: 0
 
 6. stop the container "mysql_db" and delete it.
 
-```docker stop mysql_db
-   docker rm mysql_db
+```
+docker stop mysql_db
+docker rm mysql_db
 ```
 
 7. run a new mysql container mapping with the exiting volume "mysql-data"
@@ -112,7 +113,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql> 
 ```
 
-9. it should have data from earlier container 
+9. run the query
 
 ```
 mysql> use mydatabase;
@@ -131,4 +132,5 @@ mysql> select * from mytable;
 3 rows in set (0.00 sec)
 ```
 
+It shows that the data persisted even after stopping and removing the previous MySQL container.
 
